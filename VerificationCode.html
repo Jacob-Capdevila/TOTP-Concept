@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verification Code</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #f4f7f6;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container { text-align: center; }
+
+        .company-logo {
+            max-width: 200px;
+            max-height: 80px;
+            margin-bottom: 15px;
+            object-fit: contain;
+        }
+
+        .code-card {
+            background: white;
+            padding: 40px 60px;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+            margin-top: 20px;
+        }
+
+        #randomNumberDisplay {
+            font-size: 56px;
+            font-weight: bold;
+            font-family: monospace;
+            letter-spacing: 4px;
+            color: #2980b9;
+        }
+
+        .helper-text {
+            margin-top: 15px;
+            font-size: 14px;
+            color: #7f8c8d;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <img src="Hillwood Logo.png" alt="Logo" class="company-logo">
+        <h1>Global Access Code</h1>
+        
+        <div class="code-card">
+            <div id="randomNumberDisplay">--- ---</div>
+        </div>
+        
+        <p class="helper-text">This code updates every 30 seconds.</p>
+    </div>
+
+    <script>
+        function updateSyncedNumber() {
+            // 1. Get the current time in milliseconds
+            const now = new Date().getTime();
+            
+            // 2. Create a "seed" by dividing time by 30,000ms (30 seconds)
+            // This number only changes once every 30 seconds
+            const seed = Math.floor(now / 30000);
+
+            // 3. Use a "Pseudo-Random" math function (LGC) 
+            // This ensures that the same seed always produces the same 6-digit number
+            const syncedRandom = (seed * 1103515245 + 12345) % 2147483647;
+            const finalSix = (syncedRandom % 900000) + 100000;
+
+            // 4. Format with hyphen
+            const numberText = finalSix.toString();
+            const formatted = numberText.slice(0, 3) + '-' + numberText.slice(3);
+
+            document.getElementById('randomNumberDisplay').innerText = formatted;
+        }
+
+        // Run immediately and update every second to check for the 30-second flip
+        updateSyncedNumber();
+        setInterval(updateSyncedNumber, 1000);
+    </script>
+
+</body>
+</html>
